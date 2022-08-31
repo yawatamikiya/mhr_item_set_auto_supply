@@ -5,4 +5,7 @@
 - 設定を変更するとdataフォルダに設定ファイルを出力します。
 - 特に動作確認をしていません。  
 
-![参考画像](https://user-images.githubusercontent.com/45515784/187762791-ab57ef00-a4f0-43c6-9c22-556a5a85e6b9.png)
+- 参考画像
+![参考画像](https://user-images.githubusercontent.com/45515784/187763117-e902cd73-4192-4e29-a273-dc1db7e0c05c.png)
+
+マイセットを更新した場合には Updateボタンを押下してコンボボックスのリストを更新します。
