@@ -17,6 +17,17 @@ item_selected_index = 1
 
 FILE_NAME = "ItemEquipLink.json"
 
+local function SendMessage(text)
+
+  local chatManager = sdk.get_managed_singleton("snow.gui.ChatManager")
+  if not chatManager then
+    return
+  end
+
+  chatManager:call("reqAddChatInfomation", text, 0)
+
+end
+
 -- アイテムマイセットを設定する
 local function applyItemMySet(mySetIndex)
 
@@ -47,9 +58,6 @@ local function applyItemMySet(mySetIndex)
 
     return
   end
-
-  -- アイテムマイセットの名前を取得する
-  local set_name = item_data:get_field("_Name")
 
   -- 不足していることを通知する
   SendMessage("下記マイセットのアイテムに不足がありました。\n" .. set_name)
@@ -104,17 +112,6 @@ local function getItemMySetIndex(target_set_name)
   end
 
   return index
-end
-
-local function SendMessage(text)
-
-  local chatManager = sdk.get_managed_singleton("snow.gui.ChatManager")
-  if not chatManager then
-    return
-  end
-
-  chatManager:call("reqAddChatInfomation", text, 0)
-
 end
 
 -- マイセット装備を選択した際に発生するイベントのフック
@@ -234,7 +231,7 @@ re.on_draw_ui(
         if config_data == nil then
           config_data = {}
         end
-        
+
         -- インデックスを更新する
         equip_selected_index = index
 
