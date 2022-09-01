@@ -242,17 +242,6 @@ sdk.hook(
   end
 )
 
--- アイテムマイセットを選択した際に発生するイベントのフック
-sdk.hook(
-  sdk.find_type_definition("snow.data.DataManager"):get_method("applyItemMySet(System.Int32)"),
-  function(args)
-
-    -- 初回処理実行フラグOFF
-    initial_complete = false
-    
-  end
-)
-
 -- アイテムマイセットを追加した時に発生するイベントのフック
 sdk.hook(
   sdk.find_type_definition("snow.data.DataManager"):get_method("registerItemMySet(System.Int32)"),
