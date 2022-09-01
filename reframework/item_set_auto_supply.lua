@@ -248,7 +248,8 @@ sdk.hook(
   function(args)
 
     -- 選択されたアイテムマイセットインデックスを取得する
-    item_selected_index_when_returning = sdk.to_int64(args[3])
+    -- .Net形式のインデックスからLua形式のインデックスに変更する
+    item_selected_index_when_returning = sdk.to_int64(args[3]) + 1
 
     -- 設定ファイルを読み込む
     config_data = json.load_file(FILE_NAME)
@@ -265,7 +266,7 @@ sdk.hook(
     end
 
     -- 変更を反映する
-    config_data["ApplyItemWhenReturning"]["Name"] = getItemMySetName(index - 1)
+    config_data["ApplyItemWhenReturning"]["Name"] = getItemMySetName(item_selected_index_when_returning)
 
     -- ファイルを保存する
     json.dump_file(FILE_NAME, config_data)
