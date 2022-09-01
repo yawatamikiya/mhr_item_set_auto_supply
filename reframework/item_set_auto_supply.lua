@@ -242,9 +242,40 @@ sdk.hook(
   end
 )
 
+-- アイテムマイセットを選択した際に発生するイベントのフック
+sdk.hook(
+  sdk.find_type_definition("snow.data.ItemMySet"):get_method("applyItemMySet(System.Int32)"),
+  function(args)
+
+    -- 選択されたアイテムマイセットインデックスを取得する
+    item_selected_index_when_returning = sdk.to_int64(args[3])
+
+    -- 設定ファイルを読み込む
+    config_data = json.load_file(FILE_NAME)
+    if config_data == nil then
+      config_data = {ApplyItemWhenReturning = {Enable = false, Name = ""}, MySet = {}}
+    end
+
+    if config_data["MySet"] == nil then
+      config_data["MySet"] = {}
+    end
+
+    if config_data["ApplyItemWhenReturning"] == nil then
+      config_data["ApplyItemWhenReturning"] = {Enable = false, Name = ""}
+    end
+
+    -- 変更を反映する
+    config_data["ApplyItemWhenReturning"]["Name"] = getItemMySetName(index - 1)
+
+    -- ファイルを保存する
+    json.dump_file(FILE_NAME, config_data)
+
+  end
+)
+
 -- アイテムマイセットを追加した時に発生するイベントのフック
 sdk.hook(
-  sdk.find_type_definition("snow.data.DataManager"):get_method("registerItemMySet(System.Int32)"),
+  sdk.find_type_definition("snow.data.ItemMySet"):get_method("registerItemMySet(System.Int32)"),
   function(args)
 
     -- 初回処理実行フラグOFF
@@ -255,7 +286,7 @@ sdk.hook(
 
 -- アイテムマイセットを削除した時に発生するイベントのフック
 sdk.hook(
-  sdk.find_type_definition("snow.data.DataManager"):get_method("deleteItemMySet(System.Int32)"),
+  sdk.find_type_definition("snow.data.ItemMySet"):get_method("deleteItemMySet(System.Int32)"),
   function(args)
 
     -- 初回処理実行フラグOFF
@@ -489,5 +520,3 @@ re.on_draw_ui(
     end
   end
 )
-
-
