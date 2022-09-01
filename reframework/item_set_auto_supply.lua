@@ -36,6 +36,7 @@ local function SendMessage(text)
 end
 
 -- アイテムマイセットを設定する
+-- 引数のインデックスは.Net形式を前提とする
 local function applyItemMySet(mySetIndex)
 
   -- データマネージャを取得する
@@ -72,6 +73,7 @@ local function applyItemMySet(mySetIndex)
 end
 
 -- 装備マイセットインデックスからマイセット名を取得する
+-- 引数のインデックスは.Net形式を前提とする
 local function getEquipMySetName(target_set_index)
 
   -- 装備データマネージャを取得する
@@ -89,6 +91,7 @@ local function getEquipMySetName(target_set_index)
 end
 
 -- アイテムマイセットインデックスからマイセット名を取得する
+-- 引数のインデックスは.Net形式を前提とする
 local function getItemMySetName(target_set_index)
 
   -- データマネージャを取得する
@@ -106,6 +109,7 @@ local function getItemMySetName(target_set_index)
 end
 
 -- アイテムマイセット名からインデックスを取得する
+-- 戻り値としてLua形式のインデックスを返す
 local function getItemMySetIndex(target_set_name)
 
   -- データマネージャを取得する
@@ -266,7 +270,7 @@ sdk.hook(
     end
 
     -- 変更を反映する
-    config_data["ApplyItemWhenReturning"]["Name"] = getItemMySetName(item_selected_index_when_returning)
+    config_data["ApplyItemWhenReturning"]["Name"] = getItemMySetName(item_selected_index_when_returning - 1)
 
     -- ファイルを保存する
     json.dump_file(FILE_NAME, config_data)
