@@ -295,7 +295,7 @@ re.on_draw_ui(
   function()
 
     -- ツリーを追加する
-    if imgui.tree_node("Item-Auto-Sppuly Configure") then
+    if imgui.tree_node("Item-Auto-Supply Configure") then
 
       local is_initial = false
       if initial_complete == false then
