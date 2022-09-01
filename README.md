@@ -6,6 +6,8 @@
 - 特にちゃんとした動作確認はしていません。  
 
 - 参考画像
-![参考画像](https://user-images.githubusercontent.com/45515784/187763117-e902cd73-4192-4e29-a273-dc1db7e0c05c.png)
+![参考画像](https://user-images.githubusercontent.com/45515784/187859415-94c6ffb9-7b31-4db2-91d5-f86c1e9ebb15.png)
 
-マイセットを更新した場合には Updateボタンを押下してコンボボックスのリストを更新します。
+# 履歴
+- 2022/08/31 公開  
+- 2022/09/01 クエスト帰還後自動アイテム補充機能追加  
