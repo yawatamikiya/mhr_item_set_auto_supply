@@ -212,10 +212,7 @@ sdk.hook(
 
         -- 設定ファイルで指定されたアイテムマイセットのインデックスを取得する
         -- lua形式のインデックスから.Net形式に合わせるために-1する
-        local my_set_index = getItemMySetIndex(value.Item) - 1
-
-        -- 対応するアイテムマイセットを適用する
-        applyItemMySet(my_set_index)
+        applyItemMySet(getItemMySetIndex(value.Item) - 1)
 
         break
 
@@ -305,6 +302,26 @@ sdk.hook(
   sdk.find_type_definition("snow.gui.GuiManager"):get_method("notifyReturnInVillage"),
   function(args)
       
+    -- 設定ファイルを読み込む
+    config_data = json.load_file(FILE_NAME)
+    if config_data == nil then
+      config_data = {ApplyItemWhenReturning = {Enable = false, Name = ""}, MySet = {}}
+    end
+
+    if config_data["MySet"] == nil then
+      config_data["MySet"] = {}
+    end
+
+    if config_data["ApplyItemWhenReturning"] == nil then
+      config_data["ApplyItemWhenReturning"] = {Enable = false, Name = ""}
+    end
+
+    -- 設定を反映する
+    apply_item_return_village = config_data["ApplyItemWhenReturning"]["Enable"]
+
+    -- 帰還時適用アイテムマイセットを名前から検索する
+    item_selected_index_when_returning = getItemMySetIndex(config_data["ApplyItemWhenReturning"]["Name"])
+
     if apply_item_return_village == true then
 
       -- 現在選択されているアイテムマイセットを適用する
@@ -334,6 +351,7 @@ re.on_draw_ui(
         -- インデックスをリセットする
         equip_selected_index = 1
         item_selected_index = 1
+        item_selected_index_when_returning = 1
 
         -- 設定ファイルを読み込む
         config_data = json.load_file(FILE_NAME)
@@ -353,10 +371,7 @@ re.on_draw_ui(
         apply_item_return_village = config_data["ApplyItemWhenReturning"]["Enable"]
 
         -- 帰還時適用アイテムマイセットを名前から検索する
-        local index_temp = getItemMySetIndex(config_data["ApplyItemWhenReturning"]["Name"])
-        if index_temp ~= -1 then
-          item_selected_index_when_returning = index_temp
-        end
+        item_selected_index_when_returning = getItemMySetIndex(config_data["ApplyItemWhenReturning"]["Name"])
 
         -- 初回処理実行フラグON
         initial_complete = true
@@ -364,8 +379,6 @@ re.on_draw_ui(
         -- 初回実行かどうか?
         is_initial = true
       end
-
-      local my_set_index = -1
 
       -- 装備マイセット適用コンボボックス
       changed_equip, index = imgui.combo("Equip", equip_selected_index, equip_name_list)
