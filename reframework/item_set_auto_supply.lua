@@ -243,6 +243,28 @@ sdk.hook(
   end
 )
 
+-- 装備マイセットを入れ替えた時に発生するイベントのフック
+sdk.hook(
+  sdk.find_type_definition("snow.data.EquipDataManager"):get_method("moveInsertEquipMySet(System.Int32, System.Int32)"),
+  function(args)
+
+    -- 初回処理実行フラグOFF
+    initial_complete = false
+
+  end
+)
+
+-- 装備マイセット名を変更した時に発生するイベントのフック
+sdk.hook(
+  sdk.find_type_definition("snow.data.EquipDataManager"):get_method("renameEquipMySet(System.Int32, System.String)"),
+  function(args)
+
+    -- 初回処理実行フラグOFF
+    initial_complete = false
+
+  end
+)
+
 -- アイテムマイセットを選択した際に発生するイベントのフック
 sdk.hook(
   sdk.find_type_definition("snow.data.ItemMySet"):get_method("applyItemMySet(System.Int32)"),
@@ -293,6 +315,30 @@ sdk.hook(
 
     -- 初回処理実行フラグOFF
     initial_complete = false
+
+  end
+)
+
+-- アイテムマイセットを入れ替えた時に発生するイベントのフック
+sdk.hook(
+  sdk.find_type_definition("snow.data.ItemMySet"):get_method("moveItemMySet(System.Int32, System.Int32)"),
+  function(args)
+
+    -- 初回処理実行フラグOFF
+    initial_complete = false
+
+  end
+)
+
+-- アイテムマイセット名を変更した時に発生するイベントのフック
+sdk.hook(
+  sdk.find_type_definition("snow.data.ItemMySet"):get_method("setName(System.Int32, System.String)"),
+  function(args)
+
+    -- 初回処理実行フラグOFF
+    initial_complete = false
+
+    SendMessage("setName")
 
   end
 )
