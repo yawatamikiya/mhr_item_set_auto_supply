@@ -221,6 +221,48 @@ sdk.hook(
   end
 )
 
+-- マイセット装備を選択した際に発生するイベントのフック
+sdk.hook(
+  sdk.find_type_definition("snow.data.EquipDataManager"):get_method("applyEquipMySet(snow.equip.PlEquipMySetData)"),
+  function(args)
+
+    -- 選択された装備マイセットインスタンスを取得する
+    local equip_data = sdk.to_managed_object(args[3])
+
+    -- 設定ファイルを読み込む
+    config_data = json.load_file(FILE_NAME)
+    if config_data == nil then
+      config_data = {ApplyItemWhenReturning = {Enable = false, Name = ""}, MySet = {}}
+    end
+
+    if config_data["MySet"] == nil then
+      config_data["MySet"] = {}
+    end
+
+    if config_data["ApplyItemWhenReturning"] == nil then
+      config_data["ApplyItemWhenReturning"] = {Enable = false, Name = ""}
+    end
+
+    -- 装備マイセット名を取得する
+    local my_set_name = equip_data:call("get_Name")
+
+    -- マイセット装備 <-> アイテムマイセット の紐づけを取得する
+    for no, value in pairs(config_data["MySet"]) do
+
+      -- 一致する装備マイセットインデックスが存在するか確認する
+      if value.Equip == my_set_name then
+
+        -- 設定ファイルで指定されたアイテムマイセットのインデックスを取得する
+        -- lua形式のインデックスから.Net形式に合わせるために-1する
+        applyItemMySet(getItemMySetIndex(value.Item) - 1)
+
+        break
+
+      end
+    end
+  end
+)
+
 -- 装備マイセットを追加した時に発生するイベントのフック
 sdk.hook(
   sdk.find_type_definition("snow.data.EquipDataManager"):get_method("registerEquipMySet(System.Int32)"),
